@@ -16,7 +16,7 @@ import org.slf4j.Logger;
  import org.springframework.web.bind.annotation.RestController; 
  
  
-// @CrossOrigin(origins = "http://localhost:4200") 
+ @CrossOrigin(origins = "http://localhost:4200") 
  @RestController 
  @RequestMapping(value = "/heroses") 
  public class HeroController { 
@@ -48,25 +48,27 @@ import org.slf4j.Logger;
  
  	@RequestMapping(method = RequestMethod.POST) 
  	public Hero saveHero(@RequestBody Hero hero) { 
+ 		logger.debug("등록 전 : " + hero);
  		Long nextId = 0L; 
  		if (this.heros.size() != 0) { 
  			Hero lastHero = this.heros.stream().skip(this.heros.size() - 1).findFirst().orElse(null); 
  			nextId = lastHero.getId() + 1; 
  		} 
  
- 
  		hero.setId(nextId); 
  		this.heros.add(hero); 
+ 		logger.debug("등록 후 : " + hero);
  		return hero; 
- 
- 
  	} 
  
  
  	@RequestMapping(method = RequestMethod.PUT) 
- 	public Hero updateHero(@RequestBody Hero hero) {		 
+ 	public Hero updateHero(@RequestBody Hero hero) {		
+ 		logger.debug(" 업데이트 전 : " + hero);
+ 		
  		Hero modifiedHero = this.heros.stream().filter(u -> u.getId() == hero.getId()).findFirst().orElse(null); 
  		modifiedHero.setName(hero.getName()); 
+ 		logger.debug(" 업데이트 후 : " + hero);
  		return modifiedHero; 
  	} 
  
@@ -85,6 +87,7 @@ import org.slf4j.Logger;
  	//검색 
  	@RequestMapping(value = "/name/{name}", method = RequestMethod.GET) 
  	public List<Hero> searchHeroes(@PathVariable String name){
+ 		logger.debug("검색 : " + name);
  		return this.heros.stream().filter(hero -> hero.getName().contains(name)).collect(Collectors.toList());
  	}
  
