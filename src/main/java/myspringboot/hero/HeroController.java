@@ -24,7 +24,7 @@ import org.slf4j.Logger;
  
  	private List<Hero> heros = new ArrayList<>();	 
  	 
- 	//private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
+ 	private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
  
  
  	HeroController() { 
@@ -34,12 +34,14 @@ import org.slf4j.Logger;
  
  	@RequestMapping(method = RequestMethod.GET) 
  	public List<Hero> getHeros() { 
+ 		logger.debug("목록조회");
  		return this.heros; 
  	} 
  
  
  	@RequestMapping(value = "/{id}", method = RequestMethod.GET) 
  	public Hero getHero(@PathVariable("id") Long id) { 
+ 		logger.debug("상세조회 : " + id);
  		return this.heros.stream().filter(hero -> hero.getId() == id).findFirst().orElse(null); 
  	} 
  
